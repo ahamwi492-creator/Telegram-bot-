@@ -1,38 +1,0 @@
-name: 🤖 تشغيل بوت الترندينغ كل 5 دقائق
-
-on:
-  schedule:
-    # يشغل كل 5 دقائق
-    - cron: '*/5 * * * *'
-  workflow_dispatch:  # يسمح بتشغيل يدوي من واجهة GitHub
-  push:
-    branches: [ main ]
-
-jobs:
-  run-trending-bot:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: 🗂️ تحميل الكود
-      uses: actions/checkout@v3
-      
-    - name: 🐍 إعداد Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
-        
-    - name: 📦 تثبيت المتطلبات
-      run: |
-        python -m pip install --upgrade pip
-        pip install requests
-        
-    - name: 🚀 تشغيل البوت
-      env:
-        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
-      run: |
-        python bot.py
-        
-    - name: ✅ التأكد من النجاح
-      run: |
-        echo "✅ تم تشغيل البوت بنجاح في $(date)"
